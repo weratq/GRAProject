@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
 #include "GameFramework/Actor.h"
+#include "Net/UnrealNetwork.h"
+#include "UObject/CoreNet.h"
 #include "WeaponBase.generated.h"
 
 
@@ -55,14 +57,20 @@ public:
 	float AttackSpeed;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UTexture2D* Texture;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(ExposeOnSpawn = true))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, ReplicatedUsing=OnRep_Health, meta=(ExposeOnSpawn = true))
 	FName RowName;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void OnRep_Health(FName NewRowName);
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Replicated)
 	UDataTable* DataTable;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStaticMeshComponent* MeshComponent;
 	
 	UFUNCTION()
 	void OnMeshLoad(UObject* LoadedMesh);
-
+	
+	
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };

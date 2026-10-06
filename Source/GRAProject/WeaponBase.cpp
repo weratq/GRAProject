@@ -6,6 +6,16 @@
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 
+
+
+void AWeaponBase::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AWeaponBase, RowName);
+}
+
+
 // Sets default values
 AWeaponBase::AWeaponBase()
 {
@@ -56,6 +66,11 @@ void AWeaponBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AWeaponBase::OnRep_Health_Implementation(FName NewRowName)
+{
+	
 }
 
 void AWeaponBase::OnMeshLoad(UObject* LoadedMesh)
